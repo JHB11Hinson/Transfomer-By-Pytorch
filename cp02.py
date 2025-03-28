@@ -19,6 +19,20 @@ chars = sorted(list(set(corpus)))
 # 字符和整数的投影
 stoi = {ch: i for i, ch in enumerate(chars)}
 itos = {i: ch for i, ch in enumerate(chars)}
-enconde = lambda s:[stoi[c] for c in s] #字符串转化为数字串
+encode = lambda s:[stoi[c] for c in s] #字符串转化为数字串
 decode = lambda list1:"".join([itos[i] for i in list1]) #数字串转化为字符串
-print(chars)
+
+# 数据分组
+data = torch.tensor(encode(corpus), dtype=torch.long)
+n = int(0.9 * len(data))
+train_data = data[:n]
+val_data = data[n:]
+print(train_data)
+print(val_data)
+
+print(f"文件{file_name}读取完成")
+
+def get_batch(split) :
+    data = train_data if split == "train" else val_data
+print(data)
+# print(chars)
