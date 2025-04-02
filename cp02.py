@@ -4,10 +4,10 @@ import torch.optim as optim
 from torch.nn import functional as F
 import matplotlib.pyplot as plt
 
-block_size = 5 # 字符串长度
-batch_size = 8 #同时平行处理的序列个数
+block_size = 4 # 字符串长度
+batch_size = 3 #同时平行处理的序列个数
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+n_embed= 3 # 每个字符的嵌入向量维度
 torch.manual_seed(1337)
 file_name = "hongloumeng_short.txt"
 
@@ -19,6 +19,7 @@ with open(file_name, "r", encoding="gb2312") as f:
 
 # 有序又不重复的列表
 chars = sorted(list(set(corpus)))
+vocab_size = len(chars)
 
 # 字符和整数的投影
 stoi = {ch: i for i, ch in enumerate(chars)}
@@ -47,4 +48,11 @@ def get_batch(split) :
 # ix = get_batch("train")
 # print(chars)
 
+x, y = get_batch("train")
 print(get_batch("train"))
+print(x)
+
+token_embedding = nn.Embedding(vocab_size, n_embed)
+embd = token_embedding(x)
+position_embedding = nn.Embedding(block_size, n_embed)
+print(embd)
